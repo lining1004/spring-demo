@@ -1,0 +1,5 @@
+# Project exclude paths
+/spring-ioc-annotation/target/
+/spring-ioc-xml/target/
+/spring-proxy/target/
+/spring-test/target/

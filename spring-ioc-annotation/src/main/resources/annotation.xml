@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+        <!--1.继续编写bean标签创建Student对象-->
+
+        <bean id="c2" class="com.briup.bean.Course">
+                <property name="id" value="102"/>
+                <property name="name" value="oracle"/>
+        </bean>
+        <bean id="p2" class="com.briup.bean.Person">
+                <constructor-arg name="id" value="2"/>
+                <constructor-arg name="name" value="tim"/>
+        </bean>
+        <bean id="p" class="com.briup.bean.Person">
+                <constructor-arg name="id" value="1"/>
+                <constructor-arg name="name" value="rose"/>
+        </bean>
+
+        <!--2.通过使用标签表示使用注解的位置，spring扫描到指定位置的注解
+                 指定位置：当前包及其子包下所有的类中注解信息
+        -->
+        <context:component-scan base-package="com.briup"/>
+</beans>

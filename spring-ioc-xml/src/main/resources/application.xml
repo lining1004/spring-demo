@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+       交给spring的ioc容器读取配置信息
+        1.创建什么类型的对象（bean对象）
+         class :类的全限定名 k v
+         id: 唯一标识表示该对象
+         lazy-init ：默认false 对象与容器一起创建 true 获取时才进行对象
+
+    -->
+    <bean id="s" name="s3,s4,s5" class="com.briup.bean.Student"/>
+
+    <bean id="s2" class="com.briup.bean.Student"/>
+    <!--
+         默认name  com.briup.bean.Student#0 #1 #2
+    -->
+    <bean name="s6" class="com.briup.bean.Student" lazy-init="true"></bean>
+
+
+    <!--
+         通过工厂类创建对象
+
+
+    -->
+    <!--工程类生成的Student对象-->
+    <bean name="s7" class="com.briup.bean.StudentStaticFactory" factory-method="getStudent"></bean>
+
+    <!--1.创建studentFactory对象-->
+    <bean id="factory" class="com.briup.bean.StudentFactory"/>
+    <!--2.获取工厂类生成的Student对象-->
+    <bean id="s8" factory-bean="factory" factory-method="getStudent"/>
+</beans>

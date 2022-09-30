@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--1.进行ioc操作：创建对象
+        2.进行依赖注入：set注入方式
+        name值 spring框架调用类中的setXXX方法实现属性赋值
+        ref 表示注入一个引用类型的属性值（除字符串）bean对象
+    -->
+    <bean id="s" class="com.briup.bean.Student">
+        <property name="id" value="202201"/>
+        <property name="name" value="tom"/>
+        <property name="age" value="10"/>
+        <property name="dob" ref="myDob"/>
+
+    </bean>
+
+    <!--创建时间对象-->
+    <bean id="myDob" class="java.util.Date"></bean>
+
+    <!--创建教师对象,并赋值(DI 依赖注入)-->
+    <bean id="t" class="com.briup.bean.Teacher">
+        <property name="id" value="1"/>
+        <property name="name" value="jack"/>
+        <property name="stu" ref="s"/>
+         <!--<property name="stu">
+            <ref bean="s"/>
+        </property>-->
+    </bean>
+    <!--构造器注入： 基于构造器中名字
+        调用有参构造器实现属性的赋值 依赖注入：id name 时间对象
+        lazy-init  在容器创建 创建bean对象
+    -->
+    <bean id="s2" class="com.briup.bean.Student">
+        <constructor-arg name="id" value="2"/>
+        <constructor-arg name="name" value="tom"/>
+        <constructor-arg name="age" value="18"/>
+        <constructor-arg name="dob" ref="myDob"/>
+    </bean>
+    <!-- 基于构造器中参数的位置-->
+    <bean id="t2" class="com.briup.bean.Teacher">
+        <constructor-arg index="0" value="1"/>
+        <constructor-arg index="1" value="tom"/>
+        <constructor-arg index="2" ref="s2"/>
+    </bean>
+    <!--
+        spring容器创建Person对象
+        spring容器创建一个数组对象<array>：每个元素是 A B C
+
+    -->
+    <bean id="p" class="com.briup.bean.Person">
+        <property name="students">
+            <list>
+                <ref bean="s"/>
+                <ref bean="s2"/>
+            </list>
+        </property>
+        <property name="arr">
+            <array>
+                <value>A</value>
+                <value>B</value>
+                <value>C</value>
+            </array>
+        </property>
+        <property name="list">
+            <list>
+                <value>a</value>
+                <value>b</value>
+                <value>c</value>
+            </list>
+        </property>
+        <property name="set">
+            <set>
+                <value>X</value>
+                <value>Y</value>
+                <value>Z</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="1" value="tom"/>
+                <entry key="2" value="jack"/>
+                <entry key="3" value="rose"/>
+            </map>
+        </property>
+        <property name="props">
+            <props>
+                <prop key="1">tom</prop>
+                <prop key="2">jack</prop>
+                <prop key="3">rose</prop>
+            </props>
+        </property>
+    </bean>
+    <!--命名空间注入 本质调用set方法注入-->
+    <bean id="s4" class="com.briup.bean.Student" p:id="1" p:name="jack" p:dob-ref="myDob" />
+
+</beans>
