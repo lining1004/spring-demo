@@ -12,6 +12,7 @@
         <module>spring-ioc-annotation</module>
         <module>spring-test</module>
         <module>spring-proxy</module>
+        <module>spring-aop</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

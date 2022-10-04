@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 /**
  * JDK动态代理：java中反射包中提供类和方法，不需要引用新的jar
- *
+ * 通过反射代码提供目标类的接口的实现类对象，产生代理对象
  * @Author lining
  * @Date 2022/9/30
  */
