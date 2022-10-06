@@ -7,6 +7,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 /**
  * @Author lining
  * @Date 2022/10/6
@@ -21,5 +23,13 @@ public class TestStudentDAO {
         //3.调用方法实现数据库的操作
         Student s = dao.findStudentById(1);
         System.out.println("查询："+s);
+        int num = dao.findStudentCount();
+        System.out.println("学生数量："+num);
+        List<Student> list = dao.findAllStudent();
+        System.out.println("所有学生:"+list);
+/*        Student s2 = Student.builder().id(6).name("tom").build();
+        dao.addStudent(s2);
+        dao.updateStudent(new Student(1,"lisi"));
+        dao.deleteStudentById(2);*/
     }
 }

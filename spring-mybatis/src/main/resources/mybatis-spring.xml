@@ -6,19 +6,25 @@
         https://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         https://www.springframework.org/schema/context/spring-context.xsd">
-    <!--1.创建dao层的对象StudentDao
-         实现效果：不需要手动编写property标签，实现对象的依赖注入
-         @Autowired @Resource  byType ByName
-         对应xml配置实现基于type或者name的注入
-         autowire="byType"  等价 @Autowired  只能有一个对象
-        autowire="byName"  name与属性名相同
+
+    <!--1.创建dao层对象：
+            StudentMapper对象 映射器对象
+            指定创建映射器的接口所在位置
     -->
-    <bean id="dao" class="com.briup.dao.StudentDao" autowire="byName">
-       <!-- <property name="jdbcTemplate" ref="jt"/>-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.briup.dao"/>
     </bean>
-    <!--2.创建dao对象需要的jdbcTemplate对象 jdbcTemplate#0 -->
-    <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <!--2.mybatis框架需要的对象
+         sqlSessionfactory对象：
+         environments（环境配置）
+         typeAliases（类型别名）
+         映射器（mappers）
+    -->
+
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="ds"/>
+        <property name="typeAliasesPackage" value="com.briup.bean"/>
+        <property name="mapperLocations" value="classpath:mappers/**/*.xml/"/>
     </bean>
 
     <!--3.创建数据库连接池对象：管理连接对象 连接数据库基本信息
@@ -33,4 +39,3 @@
     <!--4.指定spring查找的配置文件 context-->
     <context:property-placeholder location="classpath:db.properties"/>
 </beans>
-
