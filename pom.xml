@@ -13,6 +13,7 @@
         <module>spring-test</module>
         <module>spring-proxy</module>
         <module>spring-aop</module>
+        <module>spring-jdbc</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
