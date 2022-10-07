@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--1.创建什么对象？三层架构业务对象 service dao-->
+    <bean id="service" class="com.briup.service.StudentServiceImpl">
+        <property name="dao" ref="studentdao"/>
+    </bean>
+    <bean id="studentdao" class="com.briup.dao.StudentDao">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <!--2.需要jdbctemplate 和datasource-->
+    <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="ds"/>
+    </bean>
+    <bean id="ds" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--
+       classpath:db.properties 的位置在哪里？
+       classpath(target/classes)/db.properties
+
+    -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--创建一个bean对象表示 事务管理器对象：jdbc平台
+        需要依赖数据库连接池对象 ：本质connection.commit rollback
+    -->
+    <bean id="jdbcManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ds"/>
+    </bean>
+    <!--配置spring-tx标签实现事务管理器对象实现事务管理
+        当异常发生时，希望之前执行的sql语句的事务可以实现回滚
+
+    -->
+    <tx:advice id="txAdvice" transaction-manager="jdbcManager">
+        <tx:attributes>
+            <!--
+               事务传播：propagation
+                REQUIRED ：使用同一个事务
+                timeout -1 永不超时：数据库执行sql的时间
+                rollback-for :回滚规则 当程序抛出Exception及其子类对象，实现事务回滚
+            -->
+            <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置aop -->
+    <aop:config>
+        <!--配置切入点：配置哪些方法需要实现事务管理操作-->
+        <aop:pointcut id="txPointCut" expression="execution(* com.briup.service.*.*(..))"/>
+        <!--配置spring-tx通知和切入点-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+    </aop:config>
+
+
+</beans>
+
+
+
