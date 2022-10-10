@@ -17,6 +17,7 @@
         <module>spring-mybatis</module>
         <module>spring-trasaction</module>
         <module>spring-servlet-xml</module>
+        <module>spring-servlet-annotation</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
